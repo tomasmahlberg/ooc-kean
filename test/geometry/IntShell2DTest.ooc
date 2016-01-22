@@ -15,10 +15,10 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use ooc-base
-use ooc-math
-use ooc-geometry
-use ooc-unit
+use base
+use math
+use geometry
+use unit
 
 IntShell2DTest: class extends Fixture {
 	init: func {
@@ -61,6 +61,10 @@ IntShell2DTest: class extends Fixture {
 			expect(added right, is equal to(5))
 			expect(added top, is equal to(6))
 			expect(added bottom, is equal to(6))
+			expect(subtracted left, is equal to(3))
+			expect(subtracted right, is equal to(3))
+			expect(subtracted top, is equal to(2))
+			expect(subtracted bottom, is equal to(2))
 		})
 		this add("increase, decrease (box)", func {
 			shell := IntShell2D new(1)

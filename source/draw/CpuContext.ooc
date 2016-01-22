@@ -13,11 +13,11 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
-use ooc-base
-use ooc-draw
-use ooc-geometry
+use base
+use draw
+use geometry
 
-CpuContext: class extends AbstractContext {
+CpuContext: class extends DrawContext {
 	init: func
 	createMonochrome: override func (size: IntVector2D) -> RasterMonochrome { RasterMonochrome new(size) }
 	createBgr: override func (size: IntVector2D) -> RasterBgr { RasterBgr new(size) }

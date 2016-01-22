@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ooc-geometry
-use ooc-draw
-use ooc-draw-gpu
-use ooc-opengl
-use ooc-base
+use geometry
+use draw
+use draw-gpu
+use opengl
+use base
 
 version(!gpuOff) {
 OpenGLWindow: class extends OpenGLSurface {
@@ -40,11 +40,11 @@ OpenGLWindow: class extends OpenGLSurface {
 	_bind: override func
 	_unbind: override func
 	_getDefaultMap: override func (image: Image) -> GpuMap {
-		match (image) {
-			case (i: GpuYuv420Semiplanar) => this _yuvSemiplanarToBgra
-			case (i: RasterYuv420Semiplanar) => this _yuvSemiplanarToBgra
-			case (i: OpenGLMonochrome) => this _monochromeToBgra
-			case (i: RasterMonochrome) => this _monochromeToBgra
+		match (image class) {
+			case GpuYuv420Semiplanar => this _yuvSemiplanarToBgra
+			case RasterYuv420Semiplanar => this _yuvSemiplanarToBgra
+			case OpenGLMonochrome => this _monochromeToBgra
+			case RasterMonochrome => this _monochromeToBgra
 			case => this context defaultMap
 		}
 	}

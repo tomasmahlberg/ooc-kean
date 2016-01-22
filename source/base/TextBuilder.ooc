@@ -14,8 +14,8 @@
 * You should have received a copy of the GNU Lesser General Public License
 * along with this software. If not, see <http://www.gnu.org/licenses/>.
 */
-use ooc-base
-use ooc-collections
+use base
+use collections
 
 TextBuilder: class {
 	_data := VectorList<Text> new(32, false)
@@ -96,6 +96,7 @@ TextBuilder: class {
 
 	operator + (other: This) -> This {
 		this append(other)
+		this
 	}
 	operator == (other: This) -> Bool {
 		result := this count == other count
@@ -105,9 +106,8 @@ TextBuilder: class {
 		result
 	}
 	operator [] (index: Int) -> Char {
-		i := index
 		position := 0
-		c := this _data[position] take() count // Needed c for some strange reason.
+		c := this _data[position] take() count
 		while (c <= index) {
 			index -= c
 			++position
@@ -117,6 +117,7 @@ TextBuilder: class {
 	}
 	operator + (value: Text) -> This {
 		this append(value)
+		this
 	}
 	operator != (text: Text) -> Bool {
 		!(this == text)

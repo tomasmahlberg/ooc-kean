@@ -13,11 +13,11 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
-use ooc-base
-use ooc-geometry
-use ooc-draw
-use ooc-draw-gpu
-use ooc-collections
+use base
+use geometry
+use draw
+use draw-gpu
+use collections
 import OpenGLPacked, OpenGLMonochrome, OpenGLBgr, OpenGLBgra, OpenGLUv, OpenGLFence, OpenGLMesh, OpenGLCanvas, _RecycleBin
 import OpenGLMap
 import backend/[GLContext, GLRenderer]
@@ -148,7 +148,7 @@ OpenGLContext: class extends GpuContext {
 		}
 	}
 	update: override func { this _backend swapBuffers() }
-	packToRgba: func (source: GpuImage, target: GpuImage, viewport: IntBox2D, padding := 0) {
+	packToRgba: override func (source: GpuImage, target: GpuImage, viewport: IntBox2D, padding := 0) {
 		channels := 1
 		map: GpuMap
 		if (source instanceOf?(OpenGLMonochrome))
@@ -170,12 +170,6 @@ OpenGLContext: class extends GpuContext {
 		target canvas draw(source, map)
 	}
 	createFence: override func -> GpuFence { OpenGLFence new(this) }
-	toRasterAsync: override func (gpuImage: GpuImage) -> (RasterImage, GpuFence) {
-		result := this toRaster(gpuImage)
-		fence := this createFence()
-		fence sync()
-		(result, fence)
-	}
 	createMesh: override func (vertices: FloatPoint3D[], textureCoordinates: FloatPoint2D[]) {
 		toGL := FloatTransform3D createScaling(1.0f, -1.0f, -1.0f)
 		for (i in 0 .. vertices length)

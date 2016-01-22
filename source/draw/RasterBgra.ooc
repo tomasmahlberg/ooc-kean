@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ooc-geometry
-use ooc-base
+use geometry
+use base
 import RasterPacked
 import RasterImage
 import StbImage
@@ -122,6 +122,7 @@ RasterBgra: class extends RasterPacked {
 				}
 			result /= this size length
 		}
+		result
 	}
 	swapRedBlue: func {
 		this swapChannels(0, 2)

@@ -1,5 +1,5 @@
-use ooc-base
-use ooc-unit
+use base
+use unit
 import io/File
 
 ProfilerTest: class extends Fixture {
@@ -23,6 +23,7 @@ ProfilerTest: class extends Fixture {
 		})
 		this add("cleanup", func {
 			profiler := Profiler new("for cleanup")
+			profiler start() . stop()
 			profilerToFree := Profiler new("to free")
 			profilerToFree free()
 			Profiler free~all()

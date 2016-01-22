@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ooc-draw-gpu
-use ooc-collections
-use ooc-draw
-use ooc-geometry
-use ooc-base
+use draw-gpu
+use collections
+use draw
+use geometry
+use base
 import OpenGLContext, GraphicBuffer, GraphicBufferYuv420Semiplanar, EGLBgra, OpenGLBgra, OpenGLPacked, OpenGLMonochrome, OpenGLUv, OpenGLMap
 import threading/Thread
 
@@ -57,7 +57,6 @@ AndroidContext: class extends OpenGLContext {
 	}
 	recyclePacker: func (packer: EGLBgra) { this _packers add(packer) }
 	getPacker: func (size: IntVector2D) -> EGLBgra {
-		result: EGLBgra = null
 		index := -1
 		for (i in 0 .. this _packers count) {
 			if (this _packers[i] size == size) {
@@ -67,11 +66,11 @@ AndroidContext: class extends OpenGLContext {
 		}
 		index == -1 ? EGLBgra new(size, this) : this _packers remove(index)
 	}
-	toBuffer: func (gpuImage: GpuImage, packMap: GpuMap) -> (ByteBuffer, GpuFence) {
-		channels := (gpuImage as OpenGLPacked) channels
-		packSize := IntVector2D new(gpuImage size x / (4 / channels), gpuImage size y)
+	toBuffer: func (source: GpuImage, packMap: GpuMap) -> (ByteBuffer, GpuFence) {
+		channels := (source as OpenGLPacked) channels
+		packSize := IntVector2D new(source size x / (4 / channels), source size y)
 		gpuRgba := this getPacker(packSize)
-		this packToRgba(gpuImage, gpuRgba, IntBox2D new(gpuRgba size))
+		this packToRgba(source, gpuRgba, IntBox2D new(gpuRgba size))
 		fence := this createFence()
 		fence sync()
 		eglImage := gpuRgba as EGLBgra
@@ -84,23 +83,23 @@ AndroidContext: class extends OpenGLContext {
 		}
 		(ByteBuffer new(sourcePointer, length, recover), fence)
 	}
-	toRaster: func ~monochrome (gpuImage: OpenGLMonochrome) -> RasterImage {
-		(buffer, fence) := this toBuffer(gpuImage, this _packMonochrome)
+	toRaster: func ~monochrome (source: OpenGLMonochrome) -> RasterImage {
+		(buffer, fence) := this toBuffer(source, this _packMonochrome)
 		fence free()
-		RasterMonochrome new(buffer, gpuImage size)
+		RasterMonochrome new(buffer, source size)
 	}
-	toRaster: func ~uv (gpuImage: OpenGLUv) -> RasterImage {
-		(buffer, fence) := this toBuffer(gpuImage, this _packUv)
+	toRaster: func ~uv (source: OpenGLUv) -> RasterImage {
+		(buffer, fence) := this toBuffer(source, this _packUv)
 		fence free()
-		RasterUv new(buffer, gpuImage size)
+		RasterUv new(buffer, source size)
 	}
-	toRaster: override func (gpuImage: GpuImage) -> RasterImage {
-		match (gpuImage) {
+	toRaster: override func (source: GpuImage) -> RasterImage {
+		match (source) {
 			case (image : OpenGLMonochrome) =>
 				this isAligned(image channels * image size x) ? this toRaster(image) : super(image)
 			case (image : OpenGLUv) =>
 				this isAligned(image channels * image size x) ? this toRaster(image) : super(image)
-			case => super(gpuImage)
+			case => super(source)
 		}
 	}
 	toRasterAsync: func ~monochrome (gpuImage: OpenGLMonochrome) -> (RasterImage, GpuFence) {

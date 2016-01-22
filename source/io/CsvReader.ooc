@@ -1,5 +1,5 @@
-use ooc-base
-use ooc-collections
+use base
+use collections
 import io/[File, FileReader]
 
 CsvReader: class extends Iterator<VectorList<Text>> {
@@ -15,7 +15,7 @@ CsvReader: class extends Iterator<VectorList<Text>> {
 	remove: override func -> Bool { false }
 	iterator: func -> This { this }
 	hasNext?: override func -> Bool { this _fileReader hasNext?() }
-	next: func -> VectorList<Text> {
+	next: final override func -> VectorList<Text> {
 		result: VectorList<Text>
 		if (this hasNext?()) {
 			readCharacter: Char

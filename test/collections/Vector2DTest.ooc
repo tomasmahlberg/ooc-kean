@@ -15,8 +15,8 @@
 * along with this software. If not, see <http://www.gnu.org/licenses/>.
 */
 
-use ooc-unit
-use ooc-collections
+use unit
+use collections
 
 Vector2DTest: class extends Fixture {
 	init: func {
@@ -26,7 +26,6 @@ Vector2DTest: class extends Fixture {
 		sizeL := 15
 		sizeXL := 20
 		vector2D := Vector2D<Int> new(sizeM, sizeM)
-		s: String
 		super("Vector2D")
 		this add("count", func {
 			expect(vector2D rowCount, is equal to(sizeM))

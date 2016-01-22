@@ -15,7 +15,7 @@
 * along with this software. If not, see <http://www.gnu.org/licenses/>.
 */
 
-use ooc-base
+use base
 
 DateTimeData: cover {
 	year: Int { get set }
@@ -31,7 +31,7 @@ DateTimeData: cover {
 
 extend Time {
 	currentDateTime: static func -> DateTime {
-		result := DateTime new(0)
+		result: DateTime
 		version(windows) {
 				st: SystemTime
 				GetLocalTime(st&)

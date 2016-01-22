@@ -15,9 +15,9 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use ooc-base
-use ooc-geometry
-use ooc-draw
+use base
+use geometry
+use draw
 import include/gles3
 import ../GLFramebufferObject
 import Gles3Texture, Gles3Debug
@@ -95,7 +95,7 @@ Gles3FramebufferObject: class extends GLFramebufferObject {
 		glScissor(x, y, width, height)
 		version(debugGL) { validateEnd("FramebufferObject scissor") }
 	}
-	clear: static func {
+	clear: static final override func {
 		version(debugGL) { validateStart("FramebufferObject clear") }
 		glClear(GL_COLOR_BUFFER_BIT)
 		version(debugGL) { validateEnd("FramebufferObject clear") }

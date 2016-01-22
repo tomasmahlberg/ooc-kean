@@ -15,14 +15,13 @@
  * along with this software. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use ooc-collections
-use ooc-geometry
-use ooc-unit
+use collections
+use geometry
+use unit
 
 FloatConvexHull2DTest: class extends Fixture {
 	init: func {
 		super("FloatConvexHull2D")
-		tolerance := 0.0001f
 
 		this add("contains, triangle", func {
 			trianglePoints := VectorList<FloatPoint2D> new()

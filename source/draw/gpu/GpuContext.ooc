@@ -13,15 +13,15 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
-use ooc-geometry
-use ooc-draw
-use ooc-base
-use ooc-collections
-import AbstractContext
+use geometry
+use draw
+use base
+use collections
+import DrawContext
 import GpuImage, GpuSurface, GpuMap, GpuFence, GpuYuv420Semiplanar, GpuMesh
 
 version(!gpuOff) {
-GpuContext: abstract class extends AbstractContext {
+GpuContext: abstract class extends DrawContext {
 	defaultMap ::= null as GpuMap
 	init: func
 	createMonochrome: abstract func (size: IntVector2D) -> GpuImage
@@ -36,10 +36,15 @@ GpuContext: abstract class extends AbstractContext {
 	createMesh: abstract func (vertices: FloatPoint3D[], textureCoordinates: FloatPoint2D[]) -> GpuMesh
 
 	update: abstract func
-	packToRgba: abstract func (source: GpuImage, target: GpuImage, viewport: IntBox2D)
+	packToRgba: abstract func (source: GpuImage, target: GpuImage, viewport: IntBox2D, padding := 0)
 	finish: func { this createFence() sync() . wait() . free() }
 
-	toRaster: virtual func (gpuImage: GpuImage) -> RasterImage { gpuImage toRasterDefault() }
-	toRasterAsync: virtual func (gpuImage: GpuImage) -> (RasterImage, GpuFence) { Debug raise("toRasterAsync unimplemented") }
+	toRaster: virtual func (source: GpuImage) -> RasterImage { source toRasterDefault() }
+	toRasterAsync: virtual func (source: GpuImage) -> (RasterImage, GpuFence) {
+		result := this toRaster(source)
+		fence := this createFence()
+		fence sync()
+		(result, fence)
+	}
 }
 }

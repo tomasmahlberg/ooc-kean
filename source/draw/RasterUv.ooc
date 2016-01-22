@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ooc-geometry
-use ooc-base
+use geometry
+use base
 import RasterPacked
 import RasterImage
 import RasterBgr
@@ -125,6 +125,7 @@ RasterUv: class extends RasterPacked {
 				}
 			result /= ((this size x squared + this size y squared) as Float sqrt())
 		}
+		result
 	}
 	_createCanvas: override func -> Canvas { RasterUvCanvas new(this) }
 

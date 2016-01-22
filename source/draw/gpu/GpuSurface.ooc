@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-use ooc-geometry
-use ooc-draw
-use ooc-collections
-use ooc-base
+use geometry
+use draw
+use collections
+use base
 
 import GpuContext, GpuMap, GpuImage, GpuMesh, GpuYuv420Semiplanar
 
@@ -89,7 +89,7 @@ GpuSurface: abstract class extends Canvas {
 			temporary free()
 	}
 	draw: virtual func ~mesh (image: GpuImage, mesh: GpuMesh) { Debug raise("draw~mesh unimplemented!") }
-	readPixels: virtual func -> ByteBuffer { raise("readPixels unimplemented!") }
+	readPixels: virtual func -> ByteBuffer { raise("readPixels unimplemented!"); null }
 	_createTextureTransform: static func (imageSize: IntVector2D, box: IntBox2D) -> FloatTransform3D {
 		scaling := FloatTransform3D createScaling(box size x as Float / imageSize x, box size y as Float / imageSize y, 1.0f)
 		translation := FloatTransform3D createTranslation(box leftTop x as Float / imageSize x, box leftTop y as Float / imageSize y, 0.0f)
